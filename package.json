@@ -1,0 +1,19 @@
+{
+  "name": "videojit",
+  "version": "1.0.0",
+  "description": "Simple Videojit API to store new ideas",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "videojit",
+    "nodepractise"
+  ],
+  "author": "Mohana Naga Venkat",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0"
+  }
+}
