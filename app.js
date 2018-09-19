@@ -46,7 +46,11 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/ideas",(req,res)=>{
-  res.render("ideas");
+  Idea
+    .find({})
+    .sort({ date: "desc" })
+    .then(ideas => res.render("ideas",{ ideas }))
+    .catch( err => console.log(err) )
 })
 
 app.get("/newidea", (req, res) => {
@@ -73,7 +77,7 @@ app.post("/newidea", (req, res) => {
     const newIdea = new Idea({idea,details});
     newIdea
       .save()
-      .then( (data) => { console.log(data) } )
+      .then( (data) => { res.redirect("/ideas") } )
       .catch( (err) => console.log(err) )
   }
 })

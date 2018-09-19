@@ -1,1 +1,10 @@
-<h1>This is ideas page</h1>
+{{#each ideas}}
+<div class="card card-body mb-4">
+    <h4>{{ this.idea }}</h4>
+    <p>{{ this.details }}</p>
+</div>
+{{else}}
+<div class="card card-body mb-4">
+    <h4>No Ideas Saved Yet!</h4>
+</div>
+{{/each}}
