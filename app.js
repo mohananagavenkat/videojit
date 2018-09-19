@@ -35,5 +35,17 @@ app.listen(port, () => {
 
 //Routes
 app.get("/", (req, res) => {
-  res.render("home");
+    res.render("home");
 });
+
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
+app.get("/ideas",(req,res)=>{
+  res.render("ideas");
+})
+
+app.get("/newidea",(req,res)=>{
+  res.render("newIdea");
+})
