@@ -2,6 +2,10 @@
 <div class="card card-body mb-4">
     <h4>{{ this.idea }}</h4>
     <p>{{ this.details }}</p>
+    <div class="">
+        <a class="btn w-25 btn-warning" href="/ideas/edit/{{ this._id }}"> Edit</a>
+        <a class="btn w-25 btn-danger" href="/ideas/delete/{{ this._id }}"> Delete</a>
+    </div>
 </div>
 {{else}}
 <div class="card card-body mb-4">

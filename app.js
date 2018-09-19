@@ -49,9 +49,26 @@ app.get("/ideas",(req,res)=>{
   Idea
     .find({})
     .sort({ date: "desc" })
-    .then(ideas => res.render("ideas",{ ideas }))
+    .then(ideas => { console.log(ideas); res.render("ideas", { ideas }) } )
     .catch( err => console.log(err) )
+});
+
+app.get("/ideas/edit/:id",(req,res)=>{
+  // rendering edit form
+  Idea
+    .findOne({
+      _id:req.params.id
+    })
+    .then( idea => res.render("editIdea",{ idea }) )
+});
+
+app.post("/ideas/edit/:id",(req,res)=>{
+  // code to store idea edits
 })
+
+app.get("/ideas/delete/:id",(req,res)=>{
+  // Deleting Idea
+});
 
 app.get("/newidea", (req, res) => {
   res.render("newIdea");
@@ -77,7 +94,7 @@ app.post("/newidea", (req, res) => {
     const newIdea = new Idea({idea,details});
     newIdea
       .save()
-      .then( (data) => { res.redirect("/ideas") } )
+      .then( (data) => { console.log(data); res.redirect("/ideas") } )
       .catch( (err) => console.log(err) )
   }
 })
