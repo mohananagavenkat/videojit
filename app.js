@@ -63,7 +63,16 @@ app.get("/ideas/edit/:id",(req,res)=>{
 });
 
 app.post("/ideas/edit/:id",(req,res)=>{
-  // code to store idea edits
+  Idea
+    .findOne({
+      _id: req.params.id
+    })
+    .then(idea => {
+      idea.idea = req.body.idea;
+      idea.details = req.body.details;
+      idea.save()
+          .then( data => { console.log(data); res.redirect("/ideas") } )
+    })
 })
 
 app.get("/ideas/delete/:id",(req,res)=>{
