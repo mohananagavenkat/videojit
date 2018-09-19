@@ -26,6 +26,8 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 
 app.set("view engine", "handlebars");
 
+app.use(express.static("assets"));
+
 const port = 5002;
 
 // serving the application
