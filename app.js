@@ -21,7 +21,7 @@ mongoose
 
 require("./models/Ideas");
 
-const Idea = mongoose.model("IdeaModel");
+const Idea = mongoose.model("ideas");
 
 // Configuring the views
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -55,7 +55,27 @@ app.get("/newidea", (req, res) => {
 
 app.post("/newidea", (req, res) => {
   console.log(req.body);
-  res.redirect("/newidea");
+  const errors = [];
+  const {idea,details} = req.body;
+  if(!idea){
+    errors.push({ message:"Please enter your idea" });
+  }
+  if (!details){
+    errors.push({ message: "Please enter some brief details" });
+  }
+  if(errors.length > 0){
+    res.render("newIdea",{
+      errors,
+      idea,
+      details
+    });
+  }else{
+    const newIdea = new Idea({idea,details});
+    newIdea
+      .save()
+      .then( (data) => { console.log(data) } )
+      .catch( (err) => console.log(err) )
+  }
 })
 
 const port = 5002;

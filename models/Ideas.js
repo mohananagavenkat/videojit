@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const IdeaSchema = new Schema({
-    title:{
+    idea:{
         type: String,
         required: true
     },
-    description:{
+    details:{
         type: String,
         required: true
     },
@@ -17,4 +17,4 @@ const IdeaSchema = new Schema({
     }
 });
 
-mongoose.model("IdeaModel",IdeaSchema);
+mongoose.model("ideas",IdeaSchema);
