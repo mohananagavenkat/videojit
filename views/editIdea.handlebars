@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-body">
         <h2 class="text-center">Edit Idea</h2>
-        <form action="/ideas/edit/{{ idea._id }}" method="post">
+        <form action="/ideas/edit/{{ idea._id }}?_method=PUT" method="post">
             <div class="form-group">
                 <label for="idea">Idea:</label>
                 <input required type="text" class="form-control" id="idea" name="idea" value="{{ idea.idea }}">

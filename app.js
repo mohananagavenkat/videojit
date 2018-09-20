@@ -19,11 +19,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
 
-// Loading Ideas Model
 
-require("./models/Ideas");
-
-const Idea = mongoose.model("ideas");
 
 // Configuring the views
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -40,88 +36,19 @@ app.use(bodyParser.json()); // parse application/json data
 // Method override middleware to support PUT, DELETE HTTP methods
 app.use(methodOverride("_method"));
 
-//Routes
-app.get("/", (req, res) => {
-  res.render("home");
-});
+//Loading Routes
 
-app.get("/about", (req, res) => {
-  res.render("about");
-});
+const ideaRoutes = require("./routes/ideas");
 
-app.get("/ideas", (req, res) => {
-  Idea.find({})
-    .sort({ date: "desc" })
-    .then(ideas => {
-      console.log(ideas);
-      res.render("ideas", { ideas });
-    })
-    .catch(err => console.log(err));
-});
+const generalRoutes = require("./routes/general");
 
-app.get("/ideas/edit/:id", (req, res) => {
-  // rendering edit form
-  Idea.findOne({
-    _id: req.params.id
-  }).then(idea => res.render("editIdea", { idea }));
-});
 
-app.post("/ideas/edit/:id", (req, res) => {
-  Idea.findOne({
-    _id: req.params.id
-  }).then(idea => {
-    idea.idea = req.body.idea;
-    idea.details = req.body.details;
-    idea.save().then(data => {
-      console.log(data);
-      res.redirect("/ideas");
-    });
-  });
-});
+// using loaded routes
 
-app.get("/ideas/delete/:id", (req, res) => {
-  // Deleting Idea
-  Idea.deleteOne({
-    _id: req.params.id
-  })
-    .then(data => {
-      console.log(data);
-      res.redirect("/ideas");
-    })
-    .catch(err => console.log(error));
-});
+app.use(ideaRoutes);
 
-app.get("/newidea", (req, res) => {
-  res.render("newIdea");
-});
+app.use(generalRoutes);
 
-app.post("/newidea", (req, res) => {
-  console.log(req.body);
-  const errors = [];
-  const { idea, details } = req.body;
-  if (!idea) {
-    errors.push({ message: "Please enter your idea" });
-  }
-  if (!details) {
-    errors.push({ message: "Please enter some brief details" });
-  }
-  if (errors.length > 0) {
-    res.render("newIdea", {
-      errors,
-      idea,
-      details
-    });
-  } else {
-    const newIdea = new Idea({ idea, details });
-    newIdea
-      .save()
-      .then(data => {
-        console.log(data);
-        res.redirect("/ideas");
-      })
-      .catch(err => console.log(err));
-  }
-});
 
 const port = 5002;
 
