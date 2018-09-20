@@ -17,6 +17,28 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete");
+        if (deleteButtons.length > 0) {
+
+            [...deleteButtons].forEach(btn => btn.addEventListener("click", handleIdeaDelete));
+
+            const finalDelete = document.getElementById("finalDelete");
+
+            function handleIdeaDelete(event) {
+                event.preventDefault();
+                finalDelete.dataset.href = this.href;
+                $("#deleteConfirmation").modal();
+            }
+
+            finalDelete.addEventListener("click", function () {
+                $("#deleteConfirmation").modal("hide");
+                setTimeout(() => { window.location.href = this.dataset.href }, 500);
+            })
+
+        }
+
+    </script>
 </body>
 
 </html>
