@@ -77,6 +77,17 @@ app.post("/ideas/edit/:id",(req,res)=>{
 
 app.get("/ideas/delete/:id",(req,res)=>{
   // Deleting Idea
+  Idea
+    .deleteOne({
+      _id: req.params.id
+    })
+    .then(
+      data => {
+        console.log(data);
+        res.redirect("/ideas");
+      }
+    )
+    .catch(err => console.log(error) )
 });
 
 app.get("/newidea", (req, res) => {
