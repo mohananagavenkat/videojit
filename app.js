@@ -42,12 +42,16 @@ const ideaRoutes = require("./routes/ideas");
 
 const generalRoutes = require("./routes/general");
 
+const authRoutes = require("./routes/auth");
+
 
 // using loaded routes
 
 app.use(ideaRoutes);
 
 app.use(generalRoutes);
+
+app.use(authRoutes);
 
 
 const port = 5002;
