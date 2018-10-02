@@ -12,7 +12,7 @@
 <body>
     {{> _nav }}
     <div class="wrapper mx-auto w-75 mt-4">
-        {{{ body }}}
+        {{> _errors }} {{{ body }}}
     </div>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>

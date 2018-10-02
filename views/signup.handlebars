@@ -3,19 +3,23 @@
     <form action="/signup" method="post">
         <div class="form-group">
             <label for="name">Fullname:</label>
-            <input required type="text" class="form-control" name="name" id="name">
+            <input required type="text" class="form-control" name="name" id="name" value="{{name}}">
         </div>
         <div class="form-group">
             <label for="email">Email address:</label>
-            <input required type="email" class="form-control" name="email" id="email">
+            <input required type="email" class="form-control" name="email" id="email" value="{{email}}">
         </div>
         <div class="form-group">
             <label for="mobile">Mobile:</label>
-            <input required type="tel" class="form-control" name="mobile" id="mobile">
+            <input required type="tel" class="form-control" name="mobile" id="mobile" value="{{mobile}}">
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input required type="password" class="form-control" name="password" id="password">
+            <input required type="password" class="form-control" name="password" id="password" value="{{password}}">
+        </div>
+        <div class="form-group">
+            <label for="confirmpassword">Confirm Password:</label>
+            <input required type="password" class="form-control" name="confirmpassword" id="confirmpassword">
         </div>
         {{!--
         <div class="form-group form-check">
