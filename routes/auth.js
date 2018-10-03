@@ -8,6 +8,8 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
+const passport = require("passport");
+
 router.get("/login", (req, res) => {
   res.render("login");
 });
@@ -16,9 +18,11 @@ router.get("/signup", (req, res) => {
   res.render("signup");
 });
 
-router.post("/login", (req, res) => {
-  // res.render("login");
-});
+router.post("/login", passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+}));
 
 router.post("/signup", (req, res) => {
   const errors = [];
