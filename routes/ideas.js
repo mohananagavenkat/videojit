@@ -8,8 +8,10 @@ require("../models/Ideas");
 
 const Idea = mongoose.model("ideas");
 
-router.get("/ideas", (req, res) => {
-  Idea.find({})
+const { ensureAuthenticated } = require("../helpers/authHelper");
+
+router.get("/ideas", ensureAuthenticated, (req, res) => {
+  Idea.find({user:req.user.id})
     .sort({ date: "desc" })
     .then(ideas => {
       console.log(ideas);
@@ -18,14 +20,22 @@ router.get("/ideas", (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.get("/ideas/edit/:id", (req, res) => {
+router.get("/ideas/edit/:id", ensureAuthenticated, (req, res) => {
   // rendering edit form
   Idea.findOne({
     _id: req.params.id
-  }).then(idea => res.render("editIdea", { idea }));
+  })
+  .then(idea => {
+    if(idea.user != req.user.id){
+      req.flash("error_message","you are not authorized to do this action");
+      res.redirect("/ideas");
+      return;
+    }
+    res.render("editIdea", { idea })
+  });
 });
 
-router.put("/ideas/edit/:id", (req, res) => {
+router.put("/ideas/edit/:id", ensureAuthenticated, (req, res) => {
   console.log("PUT HTTP METHOD");
   Idea.findOne({
     _id: req.params.id
@@ -39,23 +49,27 @@ router.put("/ideas/edit/:id", (req, res) => {
   });
 });
 
-router.get("/ideas/delete/:id", (req, res) => {
+router.get("/ideas/delete/:id", ensureAuthenticated, (req, res) => {
   // Deleting Idea
   Idea.deleteOne({
-    _id: req.params.id
+    _id: req.params.id,
+    user:req.user.id
   })
     .then(data => {
+      if(data.n == 0){
+        req.flash("error_message","There is something wrong");
+      }
       console.log(data);
       res.redirect("/ideas");
     })
     .catch(err => console.log(error));
 });
 
-router.get("/newidea", (req, res) => {
+router.get("/newidea", ensureAuthenticated,(req, res) => {
   res.render("newIdea");
 });
 
-router.post("/newidea", (req, res) => {
+router.post("/newidea", ensureAuthenticated, (req, res) => {
   console.log(req.body);
   const errors = [];
   const { idea, details } = req.body;
@@ -72,7 +86,7 @@ router.post("/newidea", (req, res) => {
       details
     });
   } else {
-    const newIdea = new Idea({ idea, details });
+    const newIdea = new Idea({ idea, details, user: req.user.id });
     newIdea
       .save()
       .then(data => {

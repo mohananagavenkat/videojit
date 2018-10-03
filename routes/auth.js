@@ -10,16 +10,18 @@ const saltRounds = 10;
 
 const passport = require("passport");
 
-router.get("/login", (req, res) => {
+const { isAlreadyLoggedIn } = require("../helpers/authHelper");
+
+router.get("/login", isAlreadyLoggedIn, (req, res) => {
   res.render("login");
 });
 
-router.get("/signup", (req, res) => {
+router.get("/signup", isAlreadyLoggedIn, (req, res) => {
   res.render("signup");
 });
 
 router.post("/login", passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/ideas',
     failureRedirect: '/login',
     failureFlash: true
 }));
@@ -64,5 +66,11 @@ router.post("/signup", (req, res) => {
     })
     .catch(err => console.log);
 });
+
+router.get("/logout",(req,res)=>{
+    req.logout();
+    req.flash("success_message","Logged out successfully");
+    res.redirect("/login");
+})
 
 module.exports = router;
