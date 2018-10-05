@@ -6,6 +6,7 @@ const User = require("../models/User");
 
 const bcrypt = require("bcrypt");
 
+const VerifyToken = require("../models/VerifyToken");
 passport.use(
   new LocalStrategy(
     {
@@ -26,9 +27,32 @@ passport.use(
             return done(err);
           }
           if (res) {
-            return done(null, user);
+            if (!user.isVerified) {
+              VerifyToken.findOne({ _userId: user.id })
+                .then(tokenRecord => {
+                  if (!tokenRecord) {
+                    return done(null, false, {
+                      message: `Something went wrong! Please contact support team.`
+                    });
+                  }
+                  return done(null, false, {
+                    message: `Account is not activated yet! If you didn't receive activation email <a href="http://localhost:5002/resend_verify_email/${
+                      tokenRecord.id
+                    }" >Click Here</a> `
+                  });
+                })
+                .catch(err => {
+                  console.log(err);
+                  return done(null, false, {
+                    message: `Something went wrong! Please contact support team.`
+                  });
+                });
+            } else {
+              return done(null, user);
+            }
+          } else {
+            return done(null, false, { message: "Incorrect password." });
           }
-          return done(null, false, { message: "Incorrect password." });
         });
       });
     }
